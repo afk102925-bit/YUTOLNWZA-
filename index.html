@@ -1,84 +1,206 @@
-<!DOCTYPE html><html lang="th">
+<!DOCTYPE html>
+<html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YUTOLNWZA</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background: linear-gradient(135deg, #0a1f3c, #001428);
-      color: #e0f0ff;
-      text-align: center;
-    }.container {
-  max-width: 480px;
-  margin: auto;
-  padding: 20px;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พิเศษสำหรับคนพิเศษ</title>
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fce4ec; /* สีชมพูอ่อนโรแมนติก */
+            text-align: center;
+            position: relative; /* สำคัญ: ทำให้ลูกสามารถใช้ absolute ได้ */
+        }
 
-.pfp {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #4aa8ff;
-  margin-top: 40px;
-  box-shadow: 0 0 20px #008cffaa;
-}
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            transition: opacity 0.5s ease-in-out;
+        }
 
-h1 {
-  margin-top: 20px;
-  font-size: 28px;
-  font-weight: 700;
-  text-shadow: 0 0 10px #008cff;
-}
+        .hidden {
+            display: none !important;
+        }
 
-p {
-  opacity: 0.85;
-  margin-bottom: 25px;
-}
+        .question-text {
+            font-size: 1.5em;
+            color: #ff4081; 
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
 
-.btn {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  margin: 12px 0;
-  border-radius: 12px;
-  border: none;
-  font-size: 18px;
-  font-weight: 600;
-  background: #004a8f;
-  color: white;
-  text-decoration: none;
-  box-shadow: 0 0 12px #0077ff99;
-  transition: 0.2s;
-}
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 10;
+            /* เพิ่มความสูงเพื่อรองรับปุ่มหนีในพื้นที่นี้ */
+            min-height: 50px; 
+        }
 
-.btn:hover {
-  background: #0066c9;
-  box-shadow: 0 0 18px #0099ffcc;
-}
+        .button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-sizing: content-box;
+            /* เพิ่ม transition เพื่อให้การเคลื่อนที่ของปุ่ม YES ดูนุ่มนวลขึ้น */
+            transition: all 0.4s ease-in-out; 
+        }
 
-.donate-img {
-  width: 180px;
-  margin: 20px auto;
-  display: block;
-  filter: drop-shadow(0 0 8px #00aaff);
-}
+        .yes-button {
+            background-color: #ff4081;
+            color: white;
+            box-shadow: 0 4px #c2185b;
+            z-index: 20;
+            min-width: 100px;
+        }
 
-  </style>
+        .yes-button:hover {
+            background-color: #c2185b;
+        }
+
+        .no-button {
+            background-color: #f8bbd0;
+            color: #ff4081;
+            border: 2px solid #ff4081;
+            /* เอา transition 0s ออก เพื่อให้ปุ่มมีการเคลื่อนที่ */
+            transition: transform 0.3s, background-color 0.3s, color 0.3s; 
+        }
+        
+        .no-button.floating {
+            /* แก้ไขให้ปุ่มลอยใน Container (ไม่ใช่หน้าจอหลัก) */
+            position: absolute; 
+            width: fit-content;
+        }
+
+        .small-text {
+            font-size: 0.8em;
+            color: #9c27b0;
+            margin-top: 10px;
+        }
+
+        /* Style สำหรับหน้าจอผลลัพธ์ */
+        #result-screen {
+            padding: 40px 20px;
+        }
+
+        .result-message {
+            color: #ff4081;
+            margin-bottom: 20px;
+        }
+
+        .close-button {
+            background-color: #00bcd4;
+            color: white;
+            box-shadow: 0 4px #0097a7;
+            margin-top: 15px;
+        }
+    </style>
 </head>
-<body>  <div class="container">
-    <img class="pfp" src="https://ezdn.app/kaito/icon.png" alt="Profile"><h1>YUTOLNWZA</h1>
-<p>Creator • Android • Easy Donate</p>
+<body>
 
-<img class="donate-img" src="https://ezdn.app/easydonate.png" alt="Donate">
+    <div class="container" id="main-screen">
+        <h1 class="question-text">เป็นแฟนกับมั้ย</h1>
+        <div class="button-group">
+            <button class="button no-button" id="no-btn">ไม่เอาค่ะ (ขอคิดดูก่อน)</button>
+            <button class="button yes-button" id="yes-btn">แน่นอน เป็นแฟนกันนะ!</button>
+        </div>
+        <p class="small-text">อยากรู้จังว่าเธอจะเลือกอะไร</p>
+    </div>
 
-<a class="btn" href="https://ezdn.app/kaito" target="_blank">💙 Donate (Easy Donate)</a>
-<a class="btn" href="https://k97926736-dot.github.io/YUTOLNWZA-/" target="_blank">🌐 เว็บหลักของฉัน</a>
-<a class="btn" href="https://www.youtube.com" target="_blank">▶️ Youtube</a>
-<a class="btn" href="https://www.facebook.com" target="_blank">📘 Facebook</a>
+    <div class="container hidden" id="result-screen">
+        <h2 class="result-message">ดีใจที่สุดในโลก! ผมจะเป็นแฟนที่ดีของเธอนะ</h2>
+        <p class="small-text">ขอบคุณที่ให้โอกาสนะ ❤️</p>
+        <button class="button close-button" onclick="closeResult()">ปิด</button>
+    </div>
 
-  </div></body>
+    <script>
+        const mainScreen = document.getElementById('main-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const container = document.getElementById('main-screen');
+        let noButtonSize = 0; 
+
+        // ข้อความสำหรับปุ่ม "ไม่เป็น" ที่จะเด้งหนี
+        const messages = [
+            "พี่ไม่ยอมนะ", 
+            "ไม่ให้หนีนะ", 
+            "ต้องตอบว่า Yes สิ", 
+            "คลิกไม่ติดหรอก!",
+            "ลองอีกทีไหม?",
+            "ไม่ได้ผลนะ"
+        ];
+        
+        // 1. ปุ่ม "เป็นแฟนกันนะ" (Yes)
+        yesBtn.addEventListener('click', () => {
+            mainScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+        });
+
+        // 2. ปุ่ม "ไม่เป็น" (No) - ทำให้ปุ่ม "ไม่เป็น" เคลื่อนที่เมื่อถูกคลิก
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // ป้องกันการคลิกปุ่มจริง
+            
+            // ทำให้ปุ่ม "ไม่เป็น" ลอยและเคลื่อนที่
+            noBtn.classList.add('floating');
+            
+            const containerRect = container.getBoundingClientRect();
+            const noBtnRect = noBtn.getBoundingClientRect();
+            
+            // สุ่มตำแหน่งใหม่ภายในขอบเขตของ container
+            // คำนวณขอบเขตการเคลื่อนที่ภายในพื้นที่ของ Container เท่านั้น
+            const newX = Math.random() * (containerRect.width - noBtnRect.width - 60); // ลบ padding ออก
+            const newY = Math.random() * (containerRect.height - noBtnRect.height - 60); // ลบ padding ออก
+
+            // ตั้งค่าตำแหน่งใหม่ (relative กับ container)
+            // ใช้ 'transform' แทน 'left/top' เพื่อให้เคลื่อนที่ได้นุ่มนวลกว่า
+            noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
+            
+            // ทำให้ปุ่ม "เป็นแฟนกันนะ" ใหญ่ขึ้นเรื่อยๆ
+            noButtonSize += 0.5;
+            const newFontSize = 1 + noButtonSize;
+            yesBtn.style.fontSize = `${newFontSize}em`;
+            // ปรับ padding ให้สอดคล้องกับขนาด font
+            yesBtn.style.padding = `${12 + (noButtonSize * 4)}px ${20 + (noButtonSize * 8)}px`;
+
+            // เปลี่ยนข้อความบนปุ่ม "ไม่เป็น"
+            noBtn.textContent = messages[Math.floor(Math.random() * messages.length)];
+        });
+
+
+        // 3. ฟังก์ชันสำหรับปิดหน้าผลลัพธ์
+        function closeResult() {
+            resultScreen.classList.add('hidden');
+            mainScreen.classList.remove('hidden');
+            
+            // รีเซ็ตปุ่ม
+            noBtn.classList.remove('floating');
+            // รีเซ็ตตำแหน่งที่ถูกเปลี่ยนด้วย transform
+            noBtn.style.transform = ''; 
+            noBtn.textContent = "ไม่เอาค่ะ (ขอคิดดูก่อน)";
+            
+            noButtonSize = 0;
+            yesBtn.style.fontSize = '1em';
+            yesBtn.style.padding = '12px 20px';
+        }
+    </script>
+</body>
 </html>
