@@ -3,81 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Roblox Luau Logic & Live Editor</title>
+    <title>🔥 Luau Project Hub & Editor</title>
     <style>
         /* CSS หลัก */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 1100px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
-        h1 { color: #d9534f; text-align: center; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e6e9ed; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+        h1 { color: #f26522; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #f26522; padding-bottom: 10px; }
         
-        /* สไตล์ Editor */
-        #editor-section { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 30px; background-color: #fcfcfc;}
-        #codeEditor {
+        /* ส่วน Editor */
+        #editor-section { margin-bottom: 30px; background-color: #fcfcfc; padding: 20px; border-radius: 8px; border: 1px solid #007bff; }
+        textarea {
             width: 100%;
             height: 350px;
             padding: 15px;
             font-family: Consolas, monospace;
             font-size: 14px;
-            border: 1px solid #007bff;
             box-sizing: border-box;
             background-color: #272822; 
             color: #f8f8f2; 
             resize: vertical;
+            border: none;
         }
         .editor-controls { text-align: right; margin-top: 10px; }
         
-        /* สไตล์ปุ่ม */
-        button {
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover { background-color: #1e7e34; }
-
-        /* สไตล์โค้ดสำเร็จรูป */
-        .code-list { display: flex; flex-wrap: wrap; justify-content: space-between; }
+        /* ปุ่ม */
+        button { padding: 10px 15px; background-color: #f26522; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #d1561f; }
+        
+        /* โค้ดสำเร็จรูป */
+        .code-list { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 20px; }
         .code-section { width: 48%; margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; background-color: #ffffff; }
-        .code-section h3 { color: #007bff; margin-top: 0; border-bottom: 1px solid #007bff; padding-bottom: 5px; font-size: 1.1em; }
+        .code-section h3 { color: #007bff; margin-top: 0; padding-bottom: 5px; font-size: 1.1em; }
         .code-box { background-color: #272822; color: #f8f8f2; padding: 10px; border-radius: 4px; overflow-x: auto; position: relative; }
         .code-box pre { margin: 0; white-space: pre-wrap; word-break: break-all; font-family: Consolas, monospace; font-size: 13px; }
-        .copy-btn-small { float: right; margin-left: 10px; padding: 5px 10px; font-size: 12px; }
+        .copy-btn-small { float: right; margin-left: 10px; padding: 5px 10px; font-size: 12px; background-color: #28a745; }
+        .copy-btn-small:hover { background-color: #1e7e34; }
         .placement { font-weight: bold; color: #d9534f; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>⚡ World Trigger Luau Logic Hub & Editor</h1>
-        <p style="text-align: center; color: #555;">คัดลอกโค้ดสำเร็จรูป หรือแก้ไข/เพิ่มโค้ดของคุณเองได้ทันที</p>
-
+        <h1>🛠️ Roblox Luau Project Hub & Live Editor</h1>
+        
         <div id="editor-section">
-            <h2>📝 Code Editor (แก้ไขแล้วคัดลอก)</h2>
-            <textarea id="codeEditor" placeholder="พิมพ์/วางโค้ด Luau ของคุณที่นี่..."></textarea>
+            <h2>📝 Code Editor (สำหรับพิมพ์โค้ดใหม่/แชร์)</h2>
+            <textarea id="codeEditor" placeholder="พิมพ์หรือวางโค้ด Luau ใหม่ของคุณที่นี่..."></textarea>
             <div class="editor-controls">
                 <button onclick="copyEditorCode()">คัดลอกโค้ดใน Editor</button>
             </div>
         </div>
 
-        <hr>
-        <h2>📚 โค้ด Luau สำเร็จรูป</h2>
-        
+        <h2>📚 โค้ด Luau สำเร็จรูป (คลิกคัดลอก)</h2>
         <div class="code-list">
             
             <div class="code-section">
-                <h3>1. Stats Setup <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset1')">คัดลอก</button></h3>
+                <h3>1. Player Stats Setup <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset1')">คัดลอก</button></h3>
                 <p>ตำแหน่ง: <span class="placement">ServerScriptService (Script)</span></p>
                 <div class="code-box">
                     <pre id="preset1">
--- สร้าง StatsFolder และ IntValue ให้ผู้เล่นใหม่
+-- สร้าง PlayerStats และค่าเริ่มต้นทั้งหมด (Level, XP, Trion, Strength)
 local Players = game:GetService("Players")
 local function OnPlayerAdded(player)
-    local statsFolder = Instance.new("Folder", player)
-    statsFolder.Name = "PlayerStats"
-    
+    local statsFolder = Instance.new("Folder", player); statsFolder.Name = "PlayerStats"
     Instance.new("IntValue", statsFolder).Name = "Level"; statsFolder.Level.Value = 1
     Instance.new("IntValue", statsFolder).Name = "XP"
     Instance.new("IntValue", statsFolder).Name = "StatPoints"
@@ -92,7 +80,7 @@ Players.PlayerAdded:Connect(OnPlayerAdded)
             </div>
 
             <div class="code-section">
-                <h3>2. Leveling & Trion <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset2')">คัดลอก</button></h3>
+                <h3>2. Leveling & Trion Logic <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset2')">คัดลอก</button></h3>
                 <p>ตำแหน่ง: <span class="placement">ServerScriptService (Script)</span></p>
                 <div class="code-box">
                     <pre id="preset2">
@@ -125,8 +113,8 @@ end)
             </div>
 
             <div class="code-section">
-                <h3>3. Trigger Config <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset3')">คัดลอก</button></h3>
-                <p>ตำแหน่ง: <span class="placement">ReplicatedStorage (ModuleScript)</span> - ต้องตั้งชื่อว่า 'TriggerConfig'</p>
+                <h3>3. Trigger Config & Stat Logic <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset3')">คัดลอก</button></h3>
+                <p>ตำแหน่ง: <span class="placement">ReplicatedStorage (ModuleScript)</span> - ชื่อ 'TriggerConfig'</p>
                 <div class="code-box">
                     <pre id="preset3">
 -- [[ ModuleScript: TriggerConfig ]]
@@ -135,12 +123,12 @@ Config.Colors = {
     Normal = { Color3 = Color3.fromRGB(152, 255, 240) },
     Black = { Color3 = Color3.fromRGB(200, 10, 10) }
 }
--- ฟังก์ชันสำหรับ Server ใช้เพิ่มสเตตัสจริง
+-- ฟังก์ชันสำหรับ Server ใช้เพิ่มสเตตัสจริง (ใช้กับ RemoteEvent)
 Config.OnAddStatFired = function(player, statName)
     local stats = player:FindFirstChild("PlayerStats")
     if stats and stats.StatPoints.Value >= 1 then
         local stat = stats:FindFirstChild(statName)
-        if stat and stat:IsA("IntValue") then
+        if stat then
             stats.StatPoints.Value = stats.StatPoints.Value - 1
             stat.Value = stat.Value + 1
             return true
@@ -162,25 +150,21 @@ return Config
 local function UpdateEXPBar(xpValue)
     -- ใช้ Stats.Level.Value * 100 เพื่อหา XP ที่ต้องใช้
     -- EXP_Bar:TweenSize(UDim2.new(percent, 0, 1, 0), "Out", "Quad", 0.5, true)
-    -- EXP_Text.Text = "Lv." .. Stats.Level.Value .. " | XP: " .. xpValue .. "/" .. requiredXP
 end
 
 -- **4.2 Logic สำหรับ Scorpion (LocalScript ใน Tool)**
 local Tool = script.Parent
-local Handle = Tool:WaitForChild("Handle")
-local RETRACTED_CFrame = Handle.CFrame * CFrame.new(0, 0, 0)
-
 Tool.Equipped:Connect(function()
-    -- ใช้ ToggleBlade(true) เพื่อยืดใบมีด (ต้องสร้าง TweenService เอง)
+    -- ยืดใบมีด (Blade) ด้วย TweenService
 end)
 
 Tool.Unequipped:Connect(function()
-    -- ใช้ ToggleBlade(false) เพื่อหดใบมีด
+    -- หดใบมีด (Blade)
 end)
                     </pre>
                 </div>
             </div>
-
+            
         </div> </div> <script>
         // ฟังก์ชันคัดลอกโค้ดจาก Editor
         function copyEditorCode() {
@@ -197,7 +181,6 @@ end)
         function copyPresetCode(elementId) {
             var codeToCopy = document.getElementById(elementId).innerText;
             navigator.clipboard.writeText(codeToCopy).then(function() {
-                // เปลี่ยนข้อความปุ่มเป็น "คัดลอกแล้ว!" ชั่วคราว
                 var button = event.target;
                 var originalText = button.innerText;
                 button.innerText = "คัดลอกแล้ว!";
