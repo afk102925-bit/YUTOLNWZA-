@@ -3,204 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>พิเศษสำหรับคนพิเศษ</title>
-    
+    <title>⚡ Roblox Luau Logic & Live Editor</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #fce4ec; /* สีชมพูอ่อนโรแมนติก */
-            text-align: center;
-            position: relative; /* สำคัญ: ทำให้ลูกสามารถใช้ absolute ได้ */
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .question-text {
-            font-size: 1.5em;
-            color: #ff4081; 
-            margin-bottom: 40px;
-            font-weight: bold;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 10;
-            /* เพิ่มความสูงเพื่อรองรับปุ่มหนีในพื้นที่นี้ */
-            min-height: 50px; 
-        }
-
-        .button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            flex-shrink: 0;
-            box-sizing: content-box;
-            /* เพิ่ม transition เพื่อให้การเคลื่อนที่ของปุ่ม YES ดูนุ่มนวลขึ้น */
-            transition: all 0.4s ease-in-out; 
-        }
-
-        .yes-button {
-            background-color: #ff4081;
-            color: white;
-            box-shadow: 0 4px #c2185b;
-            z-index: 20;
-            min-width: 100px;
-        }
-
-        .yes-button:hover {
-            background-color: #c2185b;
-        }
-
-        .no-button {
-            background-color: #f8bbd0;
-            color: #ff4081;
-            border: 2px solid #ff4081;
-            /* เอา transition 0s ออก เพื่อให้ปุ่มมีการเคลื่อนที่ */
-            transition: transform 0.3s, background-color 0.3s, color 0.3s; 
-        }
+        /* CSS หลัก */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+        h1 { color: #d9534f; text-align: center; margin-bottom: 20px; }
         
-        .no-button.floating {
-            /* แก้ไขให้ปุ่มลอยใน Container (ไม่ใช่หน้าจอหลัก) */
-            position: absolute; 
-            width: fit-content;
+        /* สไตล์ Editor */
+        #editor-section { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 30px; background-color: #fcfcfc;}
+        #codeEditor {
+            width: 100%;
+            height: 350px;
+            padding: 15px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            border: 1px solid #007bff;
+            box-sizing: border-box;
+            background-color: #272822; 
+            color: #f8f8f2; 
+            resize: vertical;
         }
-
-        .small-text {
-            font-size: 0.8em;
-            color: #9c27b0;
-            margin-top: 10px;
-        }
-
-        /* Style สำหรับหน้าจอผลลัพธ์ */
-        #result-screen {
-            padding: 40px 20px;
-        }
-
-        .result-message {
-            color: #ff4081;
-            margin-bottom: 20px;
-        }
-
-        .close-button {
-            background-color: #00bcd4;
+        .editor-controls { text-align: right; margin-top: 10px; }
+        
+        /* สไตล์ปุ่ม */
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
             color: white;
-            box-shadow: 0 4px #0097a7;
-            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
+        button:hover { background-color: #1e7e34; }
+
+        /* สไตล์โค้ดสำเร็จรูป */
+        .code-list { display: flex; flex-wrap: wrap; justify-content: space-between; }
+        .code-section { width: 48%; margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; background-color: #ffffff; }
+        .code-section h3 { color: #007bff; margin-top: 0; border-bottom: 1px solid #007bff; padding-bottom: 5px; font-size: 1.1em; }
+        .code-box { background-color: #272822; color: #f8f8f2; padding: 10px; border-radius: 4px; overflow-x: auto; position: relative; }
+        .code-box pre { margin: 0; white-space: pre-wrap; word-break: break-all; font-family: Consolas, monospace; font-size: 13px; }
+        .copy-btn-small { float: right; margin-left: 10px; padding: 5px 10px; font-size: 12px; }
+        .placement { font-weight: bold; color: #d9534f; }
     </style>
 </head>
 <body>
 
-    <div class="container" id="main-screen">
-        <h1 class="question-text">เป็นแฟนกันมั้ย</h1>
-        <div class="button-group">
-            <button class="button no-button" id="no-btn">ไม่เอาค่ะ (ขอคิดดูก่อน)</button>
-            <button class="button yes-button" id="yes-btn"> เป็นแฟนกันนะ!</button>
+    <div class="container">
+        <h1>⚡ World Trigger Luau Logic Hub & Editor</h1>
+        <p style="text-align: center; color: #555;">คัดลอกโค้ดสำเร็จรูป หรือแก้ไข/เพิ่มโค้ดของคุณเองได้ทันที</p>
+
+        <div id="editor-section">
+            <h2>📝 Code Editor (แก้ไขแล้วคัดลอก)</h2>
+            <textarea id="codeEditor" placeholder="พิมพ์/วางโค้ด Luau ของคุณที่นี่..."></textarea>
+            <div class="editor-controls">
+                <button onclick="copyEditorCode()">คัดลอกโค้ดใน Editor</button>
+            </div>
         </div>
-        <p class="small-text">อยากรู้จังว่าเธอจะเลือกอะไร</p>
-    </div>
 
-    <div class="container hidden" id="result-screen">
-        <h2 class="result-message">ดีใจที่สุดในโลก! ผมจะเป็นแฟนที่ดีของเธอนะ</h2>
-        <p class="small-text">ขอบคุณที่ให้โอกาสนะ ❤️</p>
-        <button class="button close-button" onclick="closeResult()">ปิด</button>
-    </div>
-
-    <script>
-        const mainScreen = document.getElementById('main-screen');
-        const resultScreen = document.getElementById('result-screen');
-        const yesBtn = document.getElementById('yes-btn');
-        const noBtn = document.getElementById('no-btn');
-        const container = document.getElementById('main-screen');
-        let noButtonSize = 0; 
-
-        // ข้อความสำหรับปุ่ม "ไม่เป็น" ที่จะเด้งหนี
-        const messages = [
-            "พี่ไม่ยอมนะ", 
-            "ไม่ให้หนีนะ", 
-            "ต้องตอบว่า Yes สิ", 
-            "คลิกไม่ติดหรอก!",
-            "ลองอีกทีไหม?",
-            "ไม่ได้ผลนะ"
-        ];
+        <hr>
+        <h2>📚 โค้ด Luau สำเร็จรูป</h2>
         
-        // 1. ปุ่ม "เป็นแฟนกันนะ" (Yes)
-        yesBtn.addEventListener('click', () => {
-            mainScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-        });
+        <div class="code-list">
+            
+            <div class="code-section">
+                <h3>1. Stats Setup <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset1')">คัดลอก</button></h3>
+                <p>ตำแหน่ง: <span class="placement">ServerScriptService (Script)</span></p>
+                <div class="code-box">
+                    <pre id="preset1">
+-- สร้าง StatsFolder และ IntValue ให้ผู้เล่นใหม่
+local Players = game:GetService("Players")
+local function OnPlayerAdded(player)
+    local statsFolder = Instance.new("Folder", player)
+    statsFolder.Name = "PlayerStats"
+    
+    Instance.new("IntValue", statsFolder).Name = "Level"; statsFolder.Level.Value = 1
+    Instance.new("IntValue", statsFolder).Name = "XP"
+    Instance.new("IntValue", statsFolder).Name = "StatPoints"
+    Instance.new("IntValue", statsFolder).Name = "TrionCapacity"; statsFolder.TrionCapacity.Value = 100
+    Instance.new("IntValue", statsFolder).Name = "CurrentTrion"; statsFolder.CurrentTrion.Value = 100
+    Instance.new("IntValue", statsFolder).Name = "Strength"; statsFolder.Strength.Value = 10
+    Instance.new("IntValue", statsFolder).Name = "RankRating"; statsFolder.RankRating.Value = 1000
+end
+Players.PlayerAdded:Connect(OnPlayerAdded)
+                    </pre>
+                </div>
+            </div>
 
-        // 2. ปุ่ม "ไม่เป็น" (No) - ทำให้ปุ่ม "ไม่เป็น" เคลื่อนที่เมื่อถูกคลิก
-        noBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // ป้องกันการคลิกปุ่มจริง
-            
-            // ทำให้ปุ่ม "ไม่เป็น" ลอยและเคลื่อนที่
-            noBtn.classList.add('floating');
-            
-            const containerRect = container.getBoundingClientRect();
-            const noBtnRect = noBtn.getBoundingClientRect();
-            
-            // สุ่มตำแหน่งใหม่ภายในขอบเขตของ container
-            // คำนวณขอบเขตการเคลื่อนที่ภายในพื้นที่ของ Container เท่านั้น
-            const newX = Math.random() * (containerRect.width - noBtnRect.width - 60); // ลบ padding ออก
-            const newY = Math.random() * (containerRect.height - noBtnRect.height - 60); // ลบ padding ออก
+            <div class="code-section">
+                <h3>2. Leveling & Trion <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset2')">คัดลอก</button></h3>
+                <p>ตำแหน่ง: <span class="placement">ServerScriptService (Script)</span></p>
+                <div class="code-box">
+                    <pre id="preset2">
+-- ฟังก์ชัน GiveXP และ Trion Recharge
+local function GiveXP(player, amount)
+    local stats = player:FindFirstChild("PlayerStats")
+    if not stats then return end
+    stats.XP.Value = stats.XP.Value + amount
+    local req = stats.Level.Value * 100 
+    while stats.XP.Value >= req do
+        stats.Level.Value = stats.Level.Value + 1
+        stats.XP.Value = stats.XP.Value - req
+        stats.StatPoints.Value = stats.StatPoints.Value + 3
+        req = stats.Level.Value * 100 
+    end
+end
+-- Trion Recharge Loop (ทำงานทุก 1 วินาที)
+game:GetService("RunService").Heartbeat:Connect(function() 
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        local stats = player:FindFirstChild("PlayerStats")
+        if stats then
+            local max = stats.TrionCapacity.Value
+            local current = stats.CurrentTrion
+            current.Value = math.min(current.Value + 5, max)
+        end
+    end
+end)
+                    </pre>
+                </div>
+            </div>
 
-            // ตั้งค่าตำแหน่งใหม่ (relative กับ container)
-            // ใช้ 'transform' แทน 'left/top' เพื่อให้เคลื่อนที่ได้นุ่มนวลกว่า
-            noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
-            
-            // ทำให้ปุ่ม "เป็นแฟนกันนะ" ใหญ่ขึ้นเรื่อยๆ
-            noButtonSize += 0.5;
-            const newFontSize = 1 + noButtonSize;
-            yesBtn.style.fontSize = `${newFontSize}em`;
-            // ปรับ padding ให้สอดคล้องกับขนาด font
-            yesBtn.style.padding = `${12 + (noButtonSize * 4)}px ${20 + (noButtonSize * 8)}px`;
+            <div class="code-section">
+                <h3>3. Trigger Config <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset3')">คัดลอก</button></h3>
+                <p>ตำแหน่ง: <span class="placement">ReplicatedStorage (ModuleScript)</span> - ต้องตั้งชื่อว่า 'TriggerConfig'</p>
+                <div class="code-box">
+                    <pre id="preset3">
+-- [[ ModuleScript: TriggerConfig ]]
+local Config = {}
+Config.Colors = {
+    Normal = { Color3 = Color3.fromRGB(152, 255, 240) },
+    Black = { Color3 = Color3.fromRGB(200, 10, 10) }
+}
+-- ฟังก์ชันสำหรับ Server ใช้เพิ่มสเตตัสจริง
+Config.OnAddStatFired = function(player, statName)
+    local stats = player:FindFirstChild("PlayerStats")
+    if stats and stats.StatPoints.Value >= 1 then
+        local stat = stats:FindFirstChild(statName)
+        if stat and stat:IsA("IntValue") then
+            stats.StatPoints.Value = stats.StatPoints.Value - 1
+            stat.Value = stat.Value + 1
+            return true
+        end
+    end
+    return false
+end
+return Config
+                    </pre>
+                </div>
+            </div>
 
-            // เปลี่ยนข้อความบนปุ่ม "ไม่เป็น"
-            noBtn.textContent = messages[Math.floor(Math.random() * messages.length)];
-        });
+            <div class="code-section">
+                <h3>4. UI & Scorpion Logic <button class="copy-btn copy-btn-small" onclick="copyPresetCode('preset4')">คัดลอก</button></h3>
+                <p>ตำแหน่ง: <span class="placement">ScreenGui (LocalScript) และ Tool (LocalScript)</span></p>
+                <div class="code-box">
+                    <pre id="preset4">
+-- **4.1 Logic สำหรับ หลอด EXP (LocalScript ใน Frame)**
+local function UpdateEXPBar(xpValue)
+    -- ใช้ Stats.Level.Value * 100 เพื่อหา XP ที่ต้องใช้
+    -- EXP_Bar:TweenSize(UDim2.new(percent, 0, 1, 0), "Out", "Quad", 0.5, true)
+    -- EXP_Text.Text = "Lv." .. Stats.Level.Value .. " | XP: " .. xpValue .. "/" .. requiredXP
+end
 
+-- **4.2 Logic สำหรับ Scorpion (LocalScript ใน Tool)**
+local Tool = script.Parent
+local Handle = Tool:WaitForChild("Handle")
+local RETRACTED_CFrame = Handle.CFrame * CFrame.new(0, 0, 0)
 
-        // 3. ฟังก์ชันสำหรับปิดหน้าผลลัพธ์
-        function closeResult() {
-            resultScreen.classList.add('hidden');
-            mainScreen.classList.remove('hidden');
-            
-            // รีเซ็ตปุ่ม
-            noBtn.classList.remove('floating');
-            // รีเซ็ตตำแหน่งที่ถูกเปลี่ยนด้วย transform
-            noBtn.style.transform = ''; 
-            noBtn.textContent = "ไม่เอาค่ะ (ขอคิดดูก่อน)";
-            
-            noButtonSize = 0;
-            yesBtn.style.fontSize = '1em';
-            yesBtn.style.padding = '12px 20px';
+Tool.Equipped:Connect(function()
+    -- ใช้ ToggleBlade(true) เพื่อยืดใบมีด (ต้องสร้าง TweenService เอง)
+end)
+
+Tool.Unequipped:Connect(function()
+    -- ใช้ ToggleBlade(false) เพื่อหดใบมีด
+end)
+                    </pre>
+                </div>
+            </div>
+
+        </div> </div> <script>
+        // ฟังก์ชันคัดลอกโค้ดจาก Editor
+        function copyEditorCode() {
+            var editor = document.getElementById("codeEditor");
+            navigator.clipboard.writeText(editor.value).then(function() {
+                alert("คัดลอกโค้ดใน Editor เรียบร้อยแล้ว!");
+            }, function(err) {
+                console.error('ไม่สามารถคัดลอกได้: ', err);
+                alert("ไม่สามารถคัดลอกได้: กรุณาเลือกข้อความด้วยมือ");
+            });
+        }
+
+        // ฟังก์ชันคัดลอกโค้ดสำเร็จรูป (Preset)
+        function copyPresetCode(elementId) {
+            var codeToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(codeToCopy).then(function() {
+                // เปลี่ยนข้อความปุ่มเป็น "คัดลอกแล้ว!" ชั่วคราว
+                var button = event.target;
+                var originalText = button.innerText;
+                button.innerText = "คัดลอกแล้ว!";
+                button.style.backgroundColor = '#1e7e34';
+                setTimeout(function() {
+                    button.innerText = originalText;
+                    button.style.backgroundColor = '#28a745';
+                }, 1000);
+            }, function(err) {
+                console.error('ไม่สามารถคัดลอกได้: ', err);
+                alert("ไม่สามารถคัดลอกได้: กรุณาเลือกข้อความด้วยมือแล้วคัดลอก");
+            });
         }
     </script>
+
 </body>
 </html>
